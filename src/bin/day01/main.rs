@@ -35,15 +35,21 @@ fn parse_input(file_path: &str) -> Result<[Vec<u32>; 2], Box<dyn StdError>> {
     Ok(locs)
 }
 
-fn summed_min_dist(mut locs: [Vec<u32>; 2]) -> u32 {
-    locs[0].sort();
-    locs[1].sort();
-
-    return locs[0]
+// part 1
+fn summed_min_dist(locs: &[Vec<u32>; 2]) -> u32 {
+    locs[0]
         .iter()
         .zip(locs[1].iter())
         .map(|(x, y)| if x > y { x - y } else { y - x })
-        .sum();
+        .sum()
+}
+
+// part 2
+fn similarity(locs: &[Vec<u32>; 2]) -> u32 {
+    locs[0]
+        .iter()
+        .map(|&x| locs[1].iter().filter(|&y| *y == x).count() as u32 * x)
+        .sum()
 }
 
 fn main() {
@@ -51,9 +57,14 @@ fn main() {
 
     let input = parse_input(input_file_path);
 
-    let Ok(locs) = input else {
+    let Ok(mut locs) = input else {
         panic!("{}", input.err().unwrap());
     };
 
-    println!("{}", summed_min_dist(locs));
+    // summed_min_dist needs sorted, similarity doesn't care
+    locs[0].sort();
+    locs[1].sort();
+
+    println!("{}", summed_min_dist(&locs));
+    println!("{}", similarity(&locs));
 }
