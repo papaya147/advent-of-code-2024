@@ -1,6 +1,8 @@
-use std::error::Error;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::{
+    error::Error,
+    fs::File,
+    io::{BufRead, BufReader},
+};
 
 fn parse_input(file_path: &str) -> Result<[Vec<u32>; 2], Box<dyn Error>> {
     let mut locs = [Vec::new(), Vec::new()];
